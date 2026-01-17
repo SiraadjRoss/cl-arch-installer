@@ -80,7 +80,7 @@
   ;; Enable NetworkManager
   (chroot-run "systemctl enable NetworkManager")
   ;; Init pacman keyring
-  (init-pacman-keyring)
+  (init-pacman-keyring))
 
 (defun install-bootloader ()
   (format t "Installing GRUB bootloader...~%")

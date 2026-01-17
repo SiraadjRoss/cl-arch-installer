@@ -77,18 +77,15 @@
   ;; Create user
   (chroot-run (format nil "useradd -m -G wheel -s /bin/bash ~A" *username*))
   (chroot-run (format nil "echo '~A:~A' | chpasswd" *username* *user-password*))
-  ;; Enable NetworkManager
-  (chroot-run "systemctl enable NetworkManager")
   ;; Init pacman keyring
-  (init-pacman-keyring))
+  (init-pacman-keyring)
+  ;; Enable NetworkManager
+  (chroot-run "systemctl enable NetworkManager"))
 
 (defun install-bootloader ()
   (format t "Installing GRUB bootloader...~%")
   (chroot-run "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB")
   (chroot-run "grub-mkconfig -o /boot/grub/grub.cfg"))
-
-(defun copy-arch-dir ()
-  (run-command "cp -r '..' '/mnt/root'"))
 
 (defun main ()
   (handler-case
@@ -100,7 +97,6 @@
 	(configure-system)
 	(install-bootloader)
 	(format t "OK Installation complete! Rebooting soon...~%")
-        (copy-arch-dir)
 	(run-command "umount -R /mnt")
 	(format t "Now run: reboot~%"))
     (error (e)

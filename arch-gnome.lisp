@@ -60,6 +60,11 @@
 (defun chroot-run (cmd)
   (run-command (format nil "arch-chroot /mnt /bin/sh -c '~A'" cmd)))
 
+(defun init-pacman-keyring ()
+  (format t "Imitiation pacman keyring...~%")
+  (run-command "pacman-key --init")
+  (run-command "pacman-key --populate archlinux"))
+
 (defun configure-system ()
   (format t "Configuring system...~%")
   ;; Timezone
@@ -76,6 +81,8 @@
   ;; Create user
   (chroot-run (format nil "useradd -m -G wheel -s /bin/bash ~A" *username*))
   (chroot-run (format nil "echo '~A:~A' | chpasswd" *username* *user-password*))
+  ;; Init pacman keyring
+  (init-pacman-keyring)
   ;; Enable NetworkManager
   (chroot-run "systemctl enable NetworkManager")
   (chroot-run "systemctl enable gdm"))
@@ -96,7 +103,6 @@
 	(configure-system)
 	(install-bootloader)
 	(format t "OK Installation complete! Rebooting soon...~%")
-        (copy-arch-dir)
 	(run-command "umount -R /mnt")
 	(format t "Now run: reboot~%"))
     (error (e)

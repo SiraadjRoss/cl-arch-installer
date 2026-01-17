@@ -62,8 +62,8 @@
 
 (defun init-pacman-keyring ()
   (format t "Imitiation pacman keyring...~%")
-  (run-command "pacman-key --init")
-  (run-command "pacman-key --populate archlinux"))
+  (chroot-run "pacman-key --init")
+  (chroot-run "pacman-key --populate archlinux"))
 
 (defun configure-system ()
   (format t "Configuring system...~%")

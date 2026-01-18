@@ -29,7 +29,7 @@
 ;; Exequite comand from the siraadj user	
 	(run-command "su - siraadj -c 'git clone https://aur.archlinux.org/brave-bin.git'")
 	(run-command "su - siraadj -c 'cd /home/siraadj/brave-bin && makepkg -s'")
-	(run-command "pacman -U /home/siraadj/brave-bin/*.zst")
+	(run-command "pacman -U --noconfirm /home/siraadj/brave-bin/*.zst")
 ;;	(run-command "cd brave-bin && makepkg -si")
 ;;	(run-command "makepkg -si")
 	(format t "[ DONE ] brave-browser installed!~%"))

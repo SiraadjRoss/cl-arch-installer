@@ -26,7 +26,8 @@
       (progn
 	(format t ">> Starting brave-browser installer (SBCL script)...~%")
 	(run-command "git clone https://aur.archlinux.org/brave-bin.git")
-	(run-command "cd brave-bin && brave-bin")
+	(run-command "cd brave-bin && makepkg -si")
+;;	(run-command "makepkg -si")
 	(format t "[ DONE ] brave-browser installed!~%"))
     (error (e)
       (format *error-output* "X Error: ~A~%" e))))

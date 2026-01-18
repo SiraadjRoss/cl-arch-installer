@@ -28,7 +28,7 @@
 	(format t ">> Starting brave-browser installer (SBCL script)...~%")
 	(chdir "/home/siraadj")
 ;; Exequite comand from the siraadj user	
-	(run-command "su - siraadj -с 'git clone https://aur.archlinux.org/brave-bin.git'")
+	(run-command "su - siraadj -c 'git clone https://aur.archlinux.org/brave-bin.git'")
 	(chdir "brave-bin")
 	(run-command "su - siraadj -c 'makepkg -s'")
 	(run-command "pacman -U *.zst")

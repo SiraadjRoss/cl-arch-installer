@@ -26,7 +26,7 @@
   (handler-case
       (progn
 	(format t ">> Starting brave-browser installer (SBCL script)...~%")
-	(run-command "git clone https://aur.archlinux.org/brave-bin.git")
+	(run-command "su siraadj && git clone https://aur.archlinux.org/brave-bin.git")
 	(chdir "brave-bin")
 	(run-command "su siraadj && makepkg -s")
 	(run-command "pacman -U *.zst")

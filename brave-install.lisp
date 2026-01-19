@@ -29,7 +29,7 @@
   (format t ">> Starting brave-browser installer (SBCL script)...~%")
 ;; Exequite comand from the siraadj user	
   (run-user-command "git clone https://aur.archlinux.org/brave-bin.git")
-  (run-user-command "cd /home/siraadj/brave-bin && makepkg -s")
+  (run-user-command "cd /home/siraadj/brave-bin && makepkg -s --noconfirm")
   (run-command "pacman -U --noconfirm /home/siraadj/brave-bin/*.zst")
   (format t "[ DONE ] brave-browser installed!~%"))
 
@@ -37,7 +37,7 @@
 (format t ">> Starting chrome-browser installer (SBCL script)...~%")
 ;; Exequite comand from the siraadj user	
   (run-user-command "git clone https://aur.archlinux.org/google-chrome.git")
-  (run-user-command "cd /home/siraadj/google-chrome && makepkg -s")
+  (run-user-command "cd /home/siraadj/google-chrome && makepkg -s --noconfirm")
   (run-command "pacman -U --noconfirm /home/siraadj/google-chrome/*.zst")
   (format t "[ DONE ] brave-browser installed!~%"))
 

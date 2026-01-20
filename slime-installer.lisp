@@ -22,7 +22,7 @@
 
 (defun ensure-slime-installed ()
   "Клонирует или обновляет SLIME в ~/.slime/"
-  (format t "~&[1/4] Проверка наличия ~/.slime/...~%")
+  (format t "~&[1/4] Проверка наличия ~~/.slime/...~%")
   (unless (probe-file *slime-dir*)
     (format t "[1/4] Клонирование SLIME из GitHub...~%")
     (unless (run-shell-command (format nil "git clone https://github.com/slime/slime.git ~A" *slime-dir*))
@@ -33,7 +33,7 @@
 
 (defun ensure-sbclrc-configured ()
   "Добавляет загрузку Swank в ~/.sbclrc"
-  (format t "[3/4] Настройка ~/.sbclrc...~%")
+  (format t "[3/4] Настройка ~~/.sbclrc...~%")
   (let ((config-line "(push #p\"~/.slime/\" asdf:*central-registry*)"))
     (with-open-file (out *sbclrc-path*
                          :direction :output
@@ -43,12 +43,12 @@
       (format out "~A~%" config-line)
       (format out "(require 'asdf)~%")
       (format out ";;; ==============================================~%"))
-    (format t "Добавлена строка в ~/.sbclrc:~%  ~A~%" config-line)))
+    (format t "Добавлена строка в ~~/.sbclrc:~%  ~A~%" config-line)))
 
 (defun print-emacs-instructions ()
   "Печатает инструкцию для Emacs"
   (format t "~&[4/4] Готово!~%")
-  (format t "~&Теперь добавьте в ваш ~/.emacs или ~/.emacs.d/init.el:~%~%")
+  (format t "~&Теперь добавьте в ваш ~~/.emacs или ~~/.emacs.d/init.el:~%~%")
   (write-string *emacs-config-snippet*)
   (format t "~%~%После этого запустите Emacs и выполните: M-x slime~%"))
 

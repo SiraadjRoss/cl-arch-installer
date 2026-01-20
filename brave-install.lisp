@@ -22,31 +22,33 @@
       (error "Command failed: ~A (exit code ~A)" cmd exit-code))))
 
 (defun run-user-command (cmd)
-  (let ((preffix "su - siraadj -c "))
-    (run-command (concatenate 'string preffix (format nil "'~A'" cmd)))))
+  (let ((preffix "su - siraadj -c"))
+    (run-command (concatenate 'string preffix (format nil " ~s" cmd)))))
 
 (defun brave-browser ()
   (format t ">> Starting brave-browser installer (SBCL script)...~%")
-;; Exequite comand from the siraadj user	
-  (run-command "cd /tmp && git clone https://aur.archlinux.org/brave-bin.git")
-  (run-command "cd /tmp/brave-bin && makepkg -si --noconfirm")
-;; (run-command "pacman -U --noconfirm /home/siraadj/brave-bin/*.zst")
+  ;; Exequite comand from the siraadj user	
+  (run-user-command "cd /home/siraadj && git clone https://aur.archlinux.org/brave-bin.git")
+  (run-user-command "cd /home/siraadj/brave-bin && makepkg -si --noconfirm")
+  ;; (run-command "pacman -U --noconfirm /home/siraadj/brave-bin/*.zst")
   (format t "[ DONE ] brave-browser installed!~%"))
 
 (defun chrome-browser ()
-(format t ">> Starting chrome-browser installer (SBCL script)...~%")
-;; Exequite comand from the siraadj user	
-  (run-command "cd /tmp && git clone https://aur.archlinux.org/google-chrome.git")
-  (run-command "cd /tmp/google-chrome && makepkg -si --noconfirm")
-;; (run-command "pacman -U --noconfirm /home/siraadj/google-chrome/*.zst")
+  (format t ">> Starting chrome-browser installer (SBCL script)...~%")
+  ;; Exequite comand from the siraadj user	
+  (run-user-command "cd /home/siraadj && git clone https://aur.archlinux.org/google-chrome.git")
+  (run-user-command "cd /home/siraadj/google-chrome && makepkg -si --noconfirm")
+  ;; (run-command "pacman -U --noconfirm /home/siraadj/google-chrome/*.zst")
   (format t "[ DONE ] chrome-browser installed!~%"))
 
 	       
 (defun main ()
   (handler-case
       (progn
+	(run-command "sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/  %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers")
 	(brave-browser)
-	(chrome-browser))
+	(chrome-browser)
+	(run-command "sed -i 's/  %wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers"))
     (error (e)
       (format *error-output* "X Error: ~A~%" e))))
 

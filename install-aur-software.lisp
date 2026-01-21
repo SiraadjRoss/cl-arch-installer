@@ -1,14 +1,14 @@
 #!/usr/bin/sbcl --script
 
 ;;;; AUR software installer (conceptual, educational use only!)
-(require :sb-posix)
 
 (defpackage :aur-software-installer
   (:use :cl :sb-ext)
-  (:export :main))
+  (:export :install))
 (in-package :aur-software-installer)
 
-(defvar *software-list* ((name . url)))
+(defvar *software-list* '(("brave-bin" . "https://aur.archlinux.org/brave-bin.git")
+			 ("google-chrome" . "https://aur.archlinux.org/google-chrome.git")))
 
 (defun run-shell-command (cmd &key (output t) (error-output t))
   "Execute shell command. cmd is string"
@@ -23,5 +23,17 @@
 
 (defun run-user-command (cmd)
   (let ((preffix "su - siraadj -c"))
-    (run-command (concatenate 'string preffix (format nil " ~s" cmd)))))
+    (run-shell-command (concatenate 'string preffix (format nil " ~s" cmd)))))
+
+(defun install (lst)
+  (run-shell-command "sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/  %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers")
+  (dolist (soft lst)
+    (format t ">>> Starting ~A installer (SBCL script)...~%" (car soft))
+    (run-user-command (format nil "cd /home/siraadj && git clone ~A" (cdr soft)))
+    (run-user-command (format nil "cd /home/siraadj/~A && makepkg -si --noconfirm" (car soft)))
+    (format t "[ DONE ] ~A installed!~%" (car soft)))
+  (run-shell-command "sed -i 's/  %wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers"))
+
+;;; Run if executed as script
+(install)
 

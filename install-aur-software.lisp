@@ -1,7 +1,7 @@
 #!/usr/bin/sbcl --script
 
 ;;;; AUR software installer (conceptual, educational use only!)
-
+;;;; run with sudo
 (defpackage :aur-software-installer
   (:use :cl :sb-ext)
   (:export :install))
@@ -31,9 +31,11 @@
     (format t ">>> Starting ~A installer (SBCL script)...~%" (car soft))
     (run-user-command (format nil "cd /home/siraadj && git clone ~A" (cdr soft)))
     (run-user-command (format nil "cd /home/siraadj/~A && makepkg -si --noconfirm" (car soft)))
-    (format t "[ DONE ] ~A installed!~%" (car soft)))
+    (format t "[ DONE ] ~A installed!~%" (car soft))
+    (format t ">>> Deleting ~A dir (SBCL script)...~%" (car soft))
+    (run-user-command (format nil "cd /home/siraadj && rm -r ~A" (car soft))))
   (run-shell-command "sed -i 's/  %wheel ALL=(ALL:ALL) NOPASSWD: ALL/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers"))
 
 ;;; Run if executed as script
-(install)
+(install *software-list*)
 

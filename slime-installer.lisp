@@ -3,17 +3,15 @@
 ;;;; install-slime.lisp
 ;;;; Установка SLIME/Swank из официального репозитория без Quicklisp
 ;;;; Совместимо с Arch Linux, SBCL, ASDF, Emacs
-
-(in-package :cl-user)
+(defpackage :slime-install
+  (:use :cl :sh-lib)
+  (:export :main))
+(in-package :slime-install)
+(load "sh-lib.lisp")
 
 (defvar *slime-dir* (merge-pathnames ".slime/" (user-homedir-pathname)))
 (defvar *sbclrc-path* (merge-pathnames ".sbclrc" (user-homedir-pathname)))
-(defvar *emacs-config-snippet*
-  ";; Добавьте это в ~/.emacs или ~/.emacs.d/init.el
-(add-to-list 'load-path \"~/.slime/\")
-(require 'slime)
-(setq inferior-lisp-program \"sbcl\")
-")
+(defvar *emacs-path* (merge-pathnames ".emacs.d/init.el" (user-homedir-pathname)))
 
 (defun run-shell-command (cmd)
   "Выполняет shell-команду и возвращает T при успехе."
@@ -46,12 +44,15 @@
       (format out ";;; ==============================================~%"))
     (format t "Добавлена строка в ~~/.sbclrc:~%  ~A~%" config-line)))
 
-(defun print-emacs-instructions ()
-  "Печатает инструкцию для Emacs"
-  (format t "~&[4/4] Готово!~%")
-  (format t "~&Теперь добавьте в ваш ~~/.emacs или ~~/.emacs.d/init.el:~%~%")
-  (write-string *emacs-config-snippet*)
-  (format t "~%~%После этого запустите Emacs и выполните: M-x slime~%"))
+(defun emacs-setting ()
+  "write sets in .emacs.d/init.el"
+  (with-open-file (out *emacs-path*
+		       :direction :output
+		       :if-does-not-exist :create
+		       :if-exists :append)
+    (format out "~&(add-to-list 'load-path \"~~/.slime/\")")
+    (format out "~&(require 'slime)")
+    (format out "~&(setq inferior-lisp-program \"sbcl\")")))
 
 (defun main ()
   "Основная логика установки"
@@ -59,7 +60,7 @@
       (progn
         (ensure-slime-installed)
         (ensure-sbclrc-configured)
-        (print-emacs-instructions))
+        (emacs-setting))
     (error (e)
       (format *error-output* "Ошибка: ~A~%" e))))
 

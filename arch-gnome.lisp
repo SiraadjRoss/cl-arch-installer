@@ -41,9 +41,9 @@
   (run-command (format nil "mkfs.fat -F32 ~A~A" *target-disk* *efi-partition*))
   (run-command (format nil "mkfs.ext4 ~A~A" *target-disk* *root-partition*))
   ;; Mount
-(run-command "mount /dev/sda2 /mnt")
-(run-command "mkdir -p /mnt/boot/efi")
-(run-command "mount /dev/sda1 /mnt/boot/efi"))
+  (run-command (format nil "mount ~A~A /mnt" *target-disk* *root-partition*))
+  (run-command "mkdir -p /mnt/boot/efi")
+  (run-command (format nil "mount ~A~A /mnt/boot/efi" *target-disk* *efi-partition*)))
 
 (defun install-base-system ()
   (format t "Istalling base system...~%")

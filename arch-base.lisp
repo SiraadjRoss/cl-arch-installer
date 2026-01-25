@@ -3,17 +3,14 @@
 ;;;; Basic Arch Linux installer (conceptual, educational use only!)
 ;;;; Run from Arch ISO live environment.
 ;;;;------------------------------------------------------------------------------------------
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (unless (find-package :asdf)
-    (require "asdf")))
-  (asdf:find-system :uiop)) ; чтобы uiop стал доступен
+  (require "asdf")
+  (asdf:find-system :uiop) ; чтобы uiop стал доступен
 ;;;;------------------------------------------------------------------------------------------
-  
+(load "sh-lib.lisp")  
 (defpackage :arch-install
   (:use :cl :sb-ext :sh-lib)
   (:export :main))
 (in-package :arch-install)
-(load "sh-lib.lisp")
 
 (defvar *target-disk* "/dev/sda")
 (defvar *efi-partition* "1")

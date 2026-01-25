@@ -2,6 +2,12 @@
 
 ;;;; Basic Arch Linux installer (conceptual, educational use only!)
 ;;;; Run from Arch ISO live environment.
+;;;;------------------------------------------------------------------------------------------
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (unless (find-package :asdf)
+    (require "asdf"))      ; to make asdf available
+  (asdf:find-system :uiop) ; to make uiop available
+;;;;------------------------------------------------------------------------------------------
 
 (defpackage :arch-install
   (:use :cl :sb-ext)
@@ -108,7 +114,8 @@
 	(run-command "umount -R /mnt")
 	(format t "Now run: reboot~%"))
     (error (e)
-      (format *error-output* "X Error: ~A~%" e))))
+      (format *error-output* "X Error: ~A~%" e)
+      (sb-ext:exit :code 1))))
 ;;; Run if executed as script
 (main)
 

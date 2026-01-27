@@ -47,7 +47,7 @@
 
 (defun install-gnome ()
   (format t "Istalling GNOME...~%")
-  (run-command "pacstrap -G /mnt xorg-server xorg-xinit gnome firefox"))
+  (run-command "pacstrap -G /mnt xorg-server xorg-xinit gnome cups firefox"))
 
 (defun generate-fstab ()
   (format t "Generating fstab...~%")
@@ -78,6 +78,8 @@
   (chroot-run "sed -i 's/# %wheel ALL=(ALL:ALL) ALL/  %wheel ALL=(ALL:ALL) ALL/' /etc/sudoers")
   ;; Init pacman keyring
   (init-pacman-keyring)
+  ;; Enable CUPS
+  (chroot-run "systemctl enable --now cups")	
   ;; Enable NetworkManager
   (chroot-run "systemctl enable NetworkManager")
   (chroot-run "systemctl enable gdm"))

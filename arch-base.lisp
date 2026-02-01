@@ -40,7 +40,7 @@
 
 (defun install-base-system ()
   (format t "Istalling base system...~%")
-  (run-command "pacstrap -G /mnt base linux linux-firmware sbcl emacs grub efibootmgr networkmanager base-devel git less wget curl rsync dosfstools dmidecode"))
+  (run-command "pacstrap -G /mnt base linux linux-firmware sbcl emacs grub efibootmgr networkmanager base-devel git less wget curl rsync dosfstools dmidecode rtorrent tmux"))
 
 (defun generate-fstab ()
   (format t "Generating fstab...~%")

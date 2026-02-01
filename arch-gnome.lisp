@@ -47,7 +47,7 @@
 
 (defun install-gnome ()
   (format t "Istalling GNOME...~%")
-  (run-command "pacstrap -G /mnt xorg-server xorg-xinit gnome cups firefox"))
+  (run-command "pacstrap -G /mnt xorg-server xorg-xinit gnome cups firefox mpv ffmpeg"))
 
 (defun generate-fstab ()
   (format t "Generating fstab...~%")

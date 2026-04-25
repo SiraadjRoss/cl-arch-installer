@@ -12,9 +12,9 @@
   (:export :main))
 (in-package :arch-install)
 
-(defvar *target-disk* "/dev/sda")
-(defvar *efi-partition* "1")
-(defvar *root-partition* "2")
+(defvar *target-disk* "/dev/nvme0n1")
+(defvar *efi-partition* "p1")
+(defvar *root-partition* "p2")
 (defvar *hostname* "arch-desktop")
 (defvar *username* "siraadj")
 (defvar *root-password* "root")
